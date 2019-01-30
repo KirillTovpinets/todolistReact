@@ -1,5 +1,7 @@
 import React, { Component } from 'react'
 import TodoItemCreator from '../view/todo-item-creator';
+import * as actions from '../actions';
+import { connect } from 'react-redux';
 
 class TodoItemCreatorContainer extends Component {
 	
@@ -12,12 +14,11 @@ class TodoItemCreatorContainer extends Component {
 	}
 
 	addItemAction = () => {
-		this.props.addToItemHandler(this.state.text);
+		this.props.addTodo(this.state.text);
 		this.clearField();
 	}
 	handleChangeAction = (event) => {
 		this.setState({text: event.target.value});
-		this.props.filter(event.target.value);
 	}
 	clearField = () => {
 		this.setState({text: ''});
@@ -38,4 +39,6 @@ class TodoItemCreatorContainer extends Component {
 	}
 }
 
-export default TodoItemCreatorContainer;
+export default connect(null, {
+	addTodo: actions.addTodo,
+})(TodoItemCreatorContainer);
