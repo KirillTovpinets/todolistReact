@@ -10,16 +10,19 @@ class App extends Component {
 		super();
 		this.state = {
 			todoItems: [],
+			textFilter: '',
 			filterFunction: (el) => el,
 		}
 	}
 	addItemHandler = (text) => {
 		this.setState({
+			...this.state,
 			todoItems: [...this.state.todoItems, {
 				id: this.state.todoItems.length + 1, 
 				text,
-				completed: false
-			}]
+				completed: false,
+			}],
+			textFilter: ''
 		})
 	}
 	changeStatusHandler = (id) => {
@@ -29,6 +32,11 @@ class App extends Component {
 			...this.state,
 			task
 		})
+	}
+	editTodo = (id, text) => {
+		const task = this.state.todoItems.find((el) => el.id === id);
+		task.text = text;
+		this.setState({...this.state})
 	}
 	filterTasks = (completed) => {
 		let filterFunction;
@@ -42,18 +50,31 @@ class App extends Component {
 			filterFunction
 		})
 	}
+	textFilter = (text) => {
+		this.setState({
+			...this.setState,
+			textFilter: text
+		})
+	}
+	deleteTodo = (id) => {
+		const newTodos = this.state.todoItems.filter((el) => el.id !== id);
+		this.setState({...this.state, todoItems: newTodos})
+	}
 	render() {
 		return (
 			<div className='container'>
-				<TodoItemCreatorContainer addToItemHandler={this.addItemHandler}/>
+				<TodoItemCreatorContainer addToItemHandler={this.addItemHandler} filter={this.textFilter}/>
 				<SummaryComponent all={this.state.todoItems.length}
 													setFilter={this.filterTasks}
 													completedItems={this.state.todoItems.filter((el) => el.completed).length}>
 				</SummaryComponent>
 				<TodoList 
-					todoItems={this.state.todoItems.filter(this.state.filterFunction)}
+					todoItems={this.state.todoItems.filter(this.state.filterFunction).filter(el => el.text.includes(this.state.textFilter))}
 					completedItems={this.state.todoItems.filter((el) => el.completed)}
-					changeStatus={this.changeStatusHandler}/>
+					changeStatus={this.changeStatusHandler}
+					handleChangeItem={this.handleChangeItem}
+					deleteTodo={this.deleteTodo}
+					editTodo={this.editTodo}/>
 			</div>
 		)
 	}

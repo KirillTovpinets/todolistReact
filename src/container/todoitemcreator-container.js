@@ -17,6 +17,7 @@ class TodoItemCreatorContainer extends Component {
 	}
 	handleChangeAction = (event) => {
 		this.setState({text: event.target.value});
+		this.props.filter(event.target.value);
 	}
 	clearField = () => {
 		this.setState({text: ''});

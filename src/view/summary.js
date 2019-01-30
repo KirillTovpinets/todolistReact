@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { ButtonGroup, Button } from 'reactstrap';
-
+import '../css/summary.css';
 export default class SummaryComponent extends Component{
 	filterCond(flag) {
 		this.props.setFilter(flag);
