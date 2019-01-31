@@ -13,4 +13,6 @@ class TodoList extends Component{
 	};
 };
 
-export default connect(state => select.selectTodos(state))(TodoList);
+export default connect(
+	state => ({ todoItems: select.filteredTodo(state)})
+)(TodoList);
